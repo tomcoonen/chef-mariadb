@@ -165,9 +165,9 @@ end
 # set the root password for situations that don't support pre-seeding.
 # (eg. platforms other than debian/ubuntu & drop-in mysql replacements)
 execute "assign-root-password" do
-  command "\"#{node['mariadb']['mysqladmin_bin']}\" -u root password \"#{node['mariadb']['server_root_password']}\""
+  command "\"#{node['mariadb']['mariadbadmin_bin']}\" -u root password \"#{node['mariadb']['server_root_password']}\""
   action :run
-  only_if "\"#{node['mariadb']['mysql_bin']}\" -u root -e 'show databases;'"
+  only_if "\"#{node['mariadb']['mariadb_bin']}\" -u root -e 'show databases;'"
 end
 
 unless platform_family?(%w{mac_os_x})
@@ -188,13 +188,13 @@ unless platform_family?(%w{mac_os_x})
 
   if platform_family? 'windows'
     windows_batch "mysql-install-privileges" do
-      command "\"#{node['mariadb']['mysql_bin']}\" -u root #{node['mariadb']['server_root_password'].empty? ? '' : '-p' }\"#{node['mariadb']['server_root_password']}\" < \"#{grants_path}\""
+      command "\"#{node['mariadb']['mariadb_bin']}\" -u root #{node['mariadb']['server_root_password'].empty? ? '' : '-p' }\"#{node['mariadb']['server_root_password']}\" < \"#{grants_path}\""
       action :nothing
       subscribes :run, resources("template[#{grants_path}]"), :immediately
     end
   else
     execute "mysql-install-privileges" do
-      command %Q["#{node['mariadb']['mysql_bin']}" -u root #{node['mariadb']['server_root_password'].empty? ? '' : '-p' }"#{node['mariadb']['server_root_password']}" < "#{grants_path}"]
+      command %Q["#{node['mariadb']['mariadb_bin']}" -u root #{node['mariadb']['server_root_password'].empty? ? '' : '-p' }"#{node['mariadb']['server_root_password']}" < "#{grants_path}"]
       action :nothing
       subscribes :run, resources("template[#{grants_path}]"), :immediately
     end
