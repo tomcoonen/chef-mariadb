@@ -18,7 +18,7 @@
 #
 # Include Opscode helper in Node class to get access
 # to debian_before_squeeze? and ubuntu_before_lucid?
-::Chef::Node.send(:include, Opscode::mariadb::Helpers)
+::Chef::Node.send(:include, Opscode::Mysql::Helpers)
 
 case node['platform_family']
 when "rhel", "fedora"
