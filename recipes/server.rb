@@ -26,7 +26,7 @@ if Chef::Config[:solo]
   missing_attrs = %w{
     server_debian_password server_root_password server_repl_password
   }.select do |attr|
-    node["mysql"][attr].nil?
+    node["mariadb"][attr].nil?
   end.map { |attr| "node['mariadb']['#{attr}']" }
 
   if !missing_attrs.empty?

@@ -17,8 +17,8 @@ depends "openssl"
 depends "build-essential", "> 1.1.0"
 suggests "homebrew"
 suggests "windows"
-suggests "apt"
-suggests "yum"
+depends "apt"
+depends  "yum"
 
 attribute "mariadb/server_root_password",
   :display_name => "MariaDB Server Root Password",

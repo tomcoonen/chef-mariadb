@@ -26,7 +26,7 @@ when "debian"
   default['mariadb']['server']['packages']      = %w{mariadb-server}
   default['mariadb']['service_name']            = "mariadb"
   default['mariadb']['basedir']                 = "/usr"
-  default['mariadb']['data_dir']                = "/var/lib/mariadb"
+  default['mariadb']['data_dir']                = "/var/lib/mysql"
   default['mariadb']['root_group']              = "root"
   default['mariadb']['mariadbadmin_bin']        = "/usr/bin/mysqladmin"
   default['mariadb']['mariadb_bin']             = "/usr/bin/mysql"
@@ -38,16 +38,11 @@ when "debian"
   default['mariadb']['old_passwords']           = 0
   default['mariadb']['grants_path']             = "/etc/mysql/grants.sql"
 when "rhel", "fedora"
-  if node["mariadb"]["version"].to_f >= 5.5
-    default['mariadb']['service_name']          = "mariadb"
-    default['mariadb']['pid_file']              = "/var/run/mysql/mysql.pid"
-  else
-    default['mariadb']['service_name']          = "mariadbd"
-    default['mariadb']['pid_file']              = "/var/run/mysqld/mysqld.pid"
-  end
+  default['mariadb']['service_name']            = "mysql"
+  default['mariadb']['pid_file']                = "/var/run/mysql/mysql.pid"
   default['mariadb']['server']['packages']      = %w{MariaDB-server}
   default['mariadb']['basedir']                 = "/usr"
-  default['mariadb']['data_dir']                = "/var/lib/mariadb"
+  default['mariadb']['data_dir']                = "/var/lib/mysql"
   default['mariadb']['root_group']              = "root"
   default['mariadb']['mariadbadmin_bin']        = "/usr/bin/mysqladmin"
   default['mariadb']['mariadb_bin']             = "/usr/bin/mysql"
@@ -63,7 +58,7 @@ when "suse"
   default['mariadb']['service_name']            = "mariadb"
   default['mariadb']['server']['packages']      = %w{mariadb-community-server}
   default['mariadb']['basedir']                 = "/usr"
-  default['mariadb']['data_dir']                = "/var/lib/mariadb"
+  default['mariadb']['data_dir']                = "/var/lib/mysql"
   default['mariadb']['root_group']              = "root"
   default['mariadb']['mariadbadmin_bin']        = "/usr/bin/mysqladmin"
   default['mariadb']['mariadb_bin']             = "/usr/bin/mysql"
@@ -116,7 +111,7 @@ else
   default['mariadb']['server']['packages']      = %w{mariadb-server}
   default['mariadb']['service_name']            = "mariadb"
   default['mariadb']['basedir']                 = "/usr"
-  default['mariadb']['data_dir']                = "/var/lib/mariadb"
+  default['mariadb']['data_dir']                = "/var/lib/mysql"
   default['mariadb']['root_group']              = "root"
   default['mariadb']['mariadbadmin_bin']        = "/usr/bin/mysqladmin"
   default['mariadb']['mariadb_bin']             = "/usr/bin/mysql"

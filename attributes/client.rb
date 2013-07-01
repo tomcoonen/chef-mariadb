@@ -22,7 +22,7 @@
 
 case node['platform_family']
 when "rhel", "fedora"
-  default['mariadb']['client']['packages'] = %w{MariaDB MariaDB-devel}
+  default['mariadb']['client']['packages'] = %w{MariaDB-client MariaDB-devel}
 when "suse"
   default['mariadb']['client']['packages'] = %w{mariadb-community-server-client libmariadbclient-devel}
 when "debian"
