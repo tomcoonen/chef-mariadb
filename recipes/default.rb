@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: mysql
+# Cookbook Name:: mariadb
 # Recipe:: default
 #
 # Copyright 2008-2009, Opscode, Inc.
@@ -17,4 +17,4 @@
 # limitations under the License.
 #
 
-include_recipe "mysql::client"
+include_recipe "mariadb::client"

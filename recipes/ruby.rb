@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: mysql
+# Cookbook Name:: mariadb
 # Recipe:: ruby
 #
 # Author:: Jesse Howarth (<him@jessehowarth.com>)
@@ -22,10 +22,11 @@
 
 node.set['build_essential']['compiletime'] = true
 include_recipe "build-essential"
-include_recipe "mysql::client"
+include_recipe "mariadb::mariadb_repo"
+include_recipe "mariadb::client"
 
-node['mysql']['client']['packages'].each do |mysql_pack|
-  resources("package[#{mysql_pack}]").run_action(:install)
+node['mariadb']['client']['packages'].each do |mariadb_pack|
+  resources("package[#{mariadb_pack}]").run_action(:install)
 end
 
 chef_gem "mysql"

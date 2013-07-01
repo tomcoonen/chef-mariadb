@@ -26,8 +26,8 @@ default-character-set = latin1
 # * Basic Settings
 #
 port                      = 3306
-basedir                   = <%= node['mysql']['basedir'] %>
-datadir                   = <%= node['mysql']['data_dir'] %>
+basedir                   = <%= node['mariadb']['basedir'] %>
+datadir                   = <%= node['mariadb']['data_dir'] %>
 character-set-server      = latin1
 default-storage-engine    = INNODB
 sql-mode                  = "STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
@@ -35,10 +35,10 @@ sql-mode                  = "STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_S
 #
 # * Fine Tuning
 #
-thread_cache_size         = <%= node['mysql']['tunable']['thread_cache_size'] %>
-max_connections           = <%= node['mysql']['tunable']['max_connections'] %>
-table_cache               = <%= node['mysql']['tunable']['table_cache'] %>
-query_cache_size          = <%= node['mysql']['tunable']['query_cache_size'] %>
+thread_cache_size         = <%= node['mariadb']['tunable']['thread_cache_size'] %>
+max_connections           = <%= node['mariadb']['tunable']['max_connections'] %>
+table_cache               = <%= node['mariadb']['tunable']['table_cache'] %>
+query_cache_size          = <%= node['mariadb']['tunable']['query_cache_size'] %>
 tmp_table_size            = 5M
 myisam_max_sort_file_size = 100G
 myisam_sort_buffer_size   = 8M
@@ -56,6 +56,6 @@ sort_buffer_size          = 212K
 innodb_additional_mem_pool_size = 2M
 innodb_flush_log_at_trx_commit  = 1
 innodb_log_buffer_size          = 1M
-innodb_buffer_pool_size         = <%= node['mysql']['tunable']['innodb_buffer_pool_size'] %>
+innodb_buffer_pool_size         = <%= node['mariadb']['tunable']['innodb_buffer_pool_size'] %>
 innodb_log_file_size            = 10M
 innodb_thread_concurrency       = 8

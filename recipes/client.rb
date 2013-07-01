@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: mysql
+# Cookbook Name:: mariadb
 # Recipe:: client
 #
 # Copyright 2008-2011, Opscode, Inc.
@@ -21,18 +21,20 @@
 # to debian_before_squeeze? and ubuntu_before_lucid?
 ::Chef::Recipe.send(:include, Opscode::Mysql::Helpers)
 
+include_recipe "mariadb::mariadb_repo"
+
 case node['platform']
 when "windows"
-  package_file = node['mysql']['client']['package_file']
+  package_file = node['mariadb']['client']['package_file']
   remote_file "#{Chef::Config[:file_cache_path]}/#{package_file}" do
-    source node['mysql']['client']['url']
+    source node['mariadb']['client']['url']
     not_if { File.exists? "#{Chef::Config[:file_cache_path]}/#{package_file}" }
   end
 
-  windows_package node['mysql']['client']['packages'].first do
+  windows_package node['mariadb']['client']['packages'].first do
     source "#{Chef::Config[:file_cache_path]}/#{package_file}"
   end
-  windows_path node['mysql']['client']['bin_dir'] do
+  windows_path node['mariadb']['client']['bin_dir'] do
     action :add
   end
   def package(*args, &blk)
@@ -42,8 +44,8 @@ when "mac_os_x"
   include_recipe 'homebrew'
 end
 
-node['mysql']['client']['packages'].each do |mysql_pack|
-  package mysql_pack do
+node['mariadb']['client']['packages'].each do |mariadb_pack|
+  package mariadb_pack do
     action :install
   end
 end
@@ -52,8 +54,8 @@ if platform? 'windows'
   ruby_block "copy libmysql.dll into ruby path" do
     block do
       require 'fileutils'
-      FileUtils.cp "#{node['mysql']['client']['lib_dir']}\\libmysql.dll", node['mysql']['client']['ruby_dir']
+      FileUtils.cp "#{node['mariadb']['client']['lib_dir']}\\libmysql.dll", node['mariadb']['client']['ruby_dir']
     end
-    not_if { File.exist?("#{node['mysql']['client']['ruby_dir']}\\libmysql.dll") }
+    not_if { File.exist?("#{node['mariadb']['client']['ruby_dir']}\\libmysql.dll") }
   end
 end

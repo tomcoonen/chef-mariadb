@@ -18,10 +18,10 @@
 #
 
 # Must be specified for chef-solo for successful re-converge
-override['mysql']['server_root_password'] = 'ebrilvOpCethHienRoj7'
+override['mariadb']['server_root_password'] = 'ebrilvOpCethHienRoj7'
 
 default['mysql_test']['database'] = 'mysql_test'
 default['mysql_test']['username'] = 'test_user'
 default['mysql_test']['password'] = 'neshFiapog'
 
-override['mysql']['bind_address'] = 'localhost'
+override['mariadb']['bind_address'] = 'localhost'

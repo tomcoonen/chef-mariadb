@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: mysql
+# Cookbook Name:: mariadb
 # Recipe:: default
 #
 # Copyright 2008-2009, Opscode, Inc.

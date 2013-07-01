@@ -17,9 +17,9 @@
 # limitations under the License.
 #
 
-node.set['mysql']['server_debian_password'] = "ilikerandompasswords"
-node.set['mysql']['server_root_password']   = "ilikerandompasswords"
-node.set['mysql']['server_repl_password']   = "ilikerandompasswords"
+node.set['mariadb']['server_debian_password'] = "ilikerandompasswords"
+node.set['mariadb']['server_root_password']   = "ilikerandompasswords"
+node.set['mariadb']['server_repl_password']   = "ilikerandompasswords"
 
 include_recipe "mysql::ruby"
 include_recipe "yum::epel" if platform_family?('rhel')
@@ -33,7 +33,7 @@ end
 include_recipe 'mysql::server'
 
 mysql_connection = {:host => "localhost", :username => 'root',
-                    :password => node['mysql']['server_root_password']}
+                    :password => node['mariadb']['server_root_password']}
 
 mysql_database node['mysql_test']['database'] do
   connection mysql_connection
@@ -49,7 +49,7 @@ mysql_database_user node['mysql_test']['username'] do
   action [:create, :grant]
 end
 
-mysql_conn_args = "--user=root --password=#{node['mysql']['server_root_password']}"
+mysql_conn_args = "--user=root --password=#{node['mariadb']['server_root_password']}"
 
 execute 'create-sample-data' do
   command %Q{mysql #{mysql_conn_args} #{node['mysql_test']['database']} <<EOF

@@ -1,12 +1,12 @@
 [client]
 host     = localhost
 user     = debian-sys-maint
-password = <%= node['mysql']['server_debian_password'] %>
-socket   = <%= node['mysql']['socket'] %>
+password = <%= node['mariadb']['server_debian_password'] %>
+socket   = <%= node['mariadb']['socket'] %>
 
 [mysql_upgrade]
 host     = localhost
 user     = debian-sys-maint
-password = <%= node['mysql']['server_debian_password'] %>
-socket   = <%= node['mysql']['socket'] %>
+password = <%= node['mariadb']['server_debian_password'] %>
+socket   = <%= node['mariadb']['socket'] %>
 basedir  = /usr
