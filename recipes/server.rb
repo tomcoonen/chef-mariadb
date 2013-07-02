@@ -43,6 +43,26 @@ else
   node.save
 end
 
+unless node['mariadb']['replication']['master'].nil? and node['mariadb']['replication']['slave'].nil?
+  missing_attrs = %w{user}.select do |attr|
+    node['mariadb']['replication'][attr].nil?
+  end.map { |attr| "node['mariadb']['replication']" }
+
+  unless missing_attrs.empty?
+    Chef::Application.fatal!("You must set for the replication")
+  end
+
+  if node['mariadb']['replication']['secret'].nil?
+    node.default['mariadb']['replication']['secret'] = node['mariadb']['server_repl_password']
+  end
+
+  if node['mariadb']['tunable']['server_id'].nil?
+    node.default['mariadb']['tunable']['log_bin'] = node["hostname"] if node['mariadb']['tunable']['log_bin'].nil?
+    node.default['mariadb']['tunable']['binlog_format'] = "MIXED"
+    node.default['mariadb']['tunable']['server_id'] = (node['macaddress'].gsub(/:/, "").to_i(16) % (2**32 - 1)).to_s(10)
+  end
+end
+
 if platform_family?(%w{debian})
 
   directory "/var/cache/local/preseeding" do
@@ -145,6 +165,24 @@ if platform_family?(%w{mac_os_x})
     creates "#{node['mariadb']['data_dir']}/mysql"
   end
 else
+  template "#{node['mariadb']['conf_dir']}/my.cnf.d/server.cnf" do
+    source "my.cnf.erb"
+    owner "root" unless platform? 'windows'
+    group node['mariadb']['root_group'] unless platform? 'windows'
+    mode "0644"
+
+    case node['mariadb']['reload_action']
+    when 'restart'
+      notifies :restart, "service[mysql]", :immediately
+    when 'reload'
+      notifies :reload, "service[mysql]", :immediately
+    else
+      Chef::Log.info "my.cnf updated but mysql.reload_action is #{node['mariadb']['reload_action']}. No action taken."
+    end
+
+    variables :skip_federated => skip_federated
+  end
+
   execute 'mysql-install-db' do
     command "mysql_install_db"
     action :run
@@ -158,6 +196,10 @@ else
     end
     supports :status => true, :restart => true, :reload => true
     action :enable
+  end
+
+  service "mysql" do
+    action :start
   end
 end
 
@@ -177,31 +219,15 @@ unless platform_family?(%w{mac_os_x})
     end
   end
 
-  template "#{node['mariadb']['conf_dir']}/my.cnf" do
-    source "my.cnf.erb"
-    owner "root" unless platform? 'windows'
-    group node['mariadb']['root_group'] unless platform? 'windows'
-    mode "0644"
-    case node['mariadb']['reload_action']
-    when 'restart'
-      notifies :restart, "service[mysql]", :immediately
-    when 'reload'
-      notifies :reload, "service[mysql]", :immediately
-    else
-      Chef::Log.info "my.cnf updated but mysql.reload_action is #{node['mariadb']['reload_action']}. No action taken."
-    end
-    variables :skip_federated => skip_federated
-  end
-
   if platform_family? 'windows'
     windows_batch "mysql-install-privileges" do
-      command "\"#{node['mariadb']['mariadb_bin']}\" -u root #{node['mariadb']['server_root_password'].empty? ? '' : '-p' }\"#{node['mariadb']['server_root_password']}\" < \"#{grants_path}\""
+      command "\"#{node['mariadb']['mariadb_bin']}\" < \"#{grants_path}\""
       action :nothing
       subscribes :run, resources("template[#{grants_path}]"), :immediately
     end
   else
     execute "mysql-install-privileges" do
-      command %Q["#{node['mariadb']['mariadb_bin']}" -u root #{node['mariadb']['server_root_password'].empty? ? '' : '-p' }"#{node['mariadb']['server_root_password']}" < "#{grants_path}"]
+      command %Q["#{node['mariadb']['mariadb_bin']}" < "#{grants_path}"]
       action :nothing
       subscribes :run, resources("template[#{grants_path}]"), :immediately
     end
@@ -219,3 +245,22 @@ execute "assign-root-password" do
   action :run
   only_if "\"#{node['mariadb']['mariadb_bin']}\" -u root -e 'show databases;'"
 end
+
+if node['mariadb']['replication']['master'] == true
+  template "#{node['mariadb']['data_dir']}/replication_master_script" do
+    source "replication_master_script.erb"
+    owner "root" unless platform? 'windows'
+    group node['mariadb']['root_group'] unless platform? 'windows'
+    mode "0600"
+  end
+end
+
+if node['mariadb']['replication']['slave'] == true
+  template "#{node['mariadb']['data_dir']}/replication_slave_script" do
+    source "replication_slave_script.erb"
+    owner "root" unless platform? 'windows'
+    group node['mariadb']['root_group'] unless platform? 'windows'
+    mode "0600"
+  end
+end
+

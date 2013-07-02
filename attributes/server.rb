@@ -37,6 +37,7 @@ when "debian"
   default['mariadb']['pid_file']                = "/var/run/mysqld/mysqld.pid"
   default['mariadb']['old_passwords']           = 0
   default['mariadb']['grants_path']             = "/etc/mysql/grants.sql"
+
 when "rhel", "fedora"
   default['mariadb']['service_name']            = "mysql"
   default['mariadb']['pid_file']                = "/var/run/mysql/mysql.pid"
@@ -52,8 +53,7 @@ when "rhel", "fedora"
   default['mariadb']['socket']                  = "/var/lib/mysql/mysql.sock"
   default['mariadb']['old_passwords']           = 1
   default['mariadb']['grants_path']             = "/etc/mysql_grants.sql"
-  # RHEL/CentOS mariadb package does not support this option.
-  default['mariadb']['tunable']['innodb_adaptive_flushing'] = false
+
 when "suse"
   default['mariadb']['service_name']            = "mariadb"
   default['mariadb']['server']['packages']      = %w{mariadb-community-server}
@@ -68,6 +68,7 @@ when "suse"
   default['mariadb']['pid_file']                = "/var/run/mysql/mysqld.pid"
   default['mariadb']['old_passwords']           = 1
   default['mariadb']['grants_path']             = "/etc/mysql_grants.sql"
+
 when "freebsd"
   default['mariadb']['server']['packages']      = %w{mariadb55-server}
   default['mariadb']['service_name']            = "mariadb-server"
@@ -83,6 +84,7 @@ when "freebsd"
   default['mariadb']['pid_file']                = "/var/run/mysqld/mysqld.pid"
   default['mariadb']['old_passwords']           = 0
   default['mariadb']['grants_path']             = "/var/db/mysql/grants.sql"
+
 when "windows"
   default['mariadb']['server']['packages']      = ["MariaDB Server 5.5"]
   default['mariadb']['version']                 = '5.5.21'
@@ -100,6 +102,7 @@ when "windows"
   default['mariadb']['conf_dir']                = node['mariadb']['basedir']
   default['mariadb']['old_passwords']           = 0
   default['mariadb']['grants_path']             = "#{node['mariadb']['conf_dir']}\\grants.sql"
+
 when "mac_os_x"
   default['mariadb']['server']['packages']      = %w{mariadb}
   default['mariadb']['basedir']                 = "/usr/local/Cellar"
@@ -107,6 +110,7 @@ when "mac_os_x"
   default['mariadb']['root_group']              = "admin"
   default['mariadb']['mariadbadmin_bin']        = "/usr/local/bin/mysqladmin"
   default['mariadb']['mariadb_bin']             = "/usr/local/bin/mysql"
+
 else
   default['mariadb']['server']['packages']      = %w{mariadb-server}
   default['mariadb']['service_name']            = "mariadb"
@@ -228,7 +232,7 @@ default['mariadb']['tunable']['query_cache_size']     = "16M"
 
 default['mariadb']['tunable']['log_slow_queries']     = "/var/log/mysql/slow.log"
 default['mariadb']['tunable']['slow_query_log']       = node['mariadb']['tunable']['log_slow_queries'] # log_slow_queries is deprecated
-                                                                                                   # in favor of slow_query_log
+                                                                                                       # in favor of slow_query_log
 default['mariadb']['tunable']['long_query_time']      = 2
 
 default['mariadb']['tunable']['expire_logs_days']     = 10
@@ -247,3 +251,8 @@ unless node['platform_family'] == "rhel" && node['platform_version'].to_i < 6
   default['mariadb']['tunable']['table_open_cache'] = "128"
   default['mariadb']['tunable']['binlog_format']    = "statement" if node['mariadb']['tunable']['log_bin']
 end
+
+default['mariadb']['replication']['master'] = nil
+default['mariadb']['replication']['slave'] = nil
+default['mariadb']['replication']['user'] = nil
+default['mariadb']['replication']['secret'] = nil

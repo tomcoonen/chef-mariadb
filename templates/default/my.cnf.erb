@@ -159,10 +159,10 @@ log-queries-not-using-indexes
 # note: if you are setting up a replication slave, see README.Debian about
 #       other settings you may need to change.
 <%- if node['mariadb']['tunable']['server_id'] %>
-server-id = <%= node['mariadb']['tunable']['server_id'] %>
+server-id               = <%= node['mariadb']['tunable']['server_id'] %>
 <% end %>
 <%- if node['mariadb']['tunable']['log_bin'] %>
-log_bin 		= <%= node['mariadb']['tunable']['log_bin'] %>
+log_bin                 = <%= node['mariadb']['tunable']['log_bin'] %>
 binlog_format           = <%= node['mariadb']['tunable']['binlog_format'] %>
 log_slave_updates       = <%= node['mariadb']['tunable']['log_slave_updates'] %>
 <%- end %>
@@ -204,12 +204,10 @@ slave_compressed_protocol = <%= node['mariadb']['tunable']['slave_compressed_pro
 # You might want to disable InnoDB to shrink the mysqld process by circa 100MB.
 #skip-innodb
 
-<%- if node["mysql"]["version"].to_f >= 5.5 %>
 innodb_write_io_threads         = <%= node['mariadb']['tunable']['innodb_write_io_threads'] %>
 innodb_io_capacity              = <%= node['mariadb']['tunable']['innodb_io_capacity'] %>
 innodb_read_io_threads          = <%= node['mariadb']['tunable']['innodb_read_io_threads'] %>
-innodb_buffer_pool_instances    = <%= node['mariadb']['tunable']['innodb_buffer_pool_instances'] %>     
-<%- end %>
+innodb_buffer_pool_instances    = <%= node['mariadb']['tunable']['innodb_buffer_pool_instances'] %>
 
 ## InnoDB Plugin Independent Settings
 innodb_data_home_dir            = <%= node['mariadb']['data_dir']  %>
