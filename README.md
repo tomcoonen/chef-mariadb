@@ -3,6 +3,9 @@ Description
 
 Installs and configures MariaDB client or server.
 
+A word of caution: I have not tested it on anything beside CentOS 6.4 with chef
+solo. I would be happy to accept patches for other platforms!
+
 Requirements
 ============
 
@@ -18,9 +21,7 @@ Platform
 Tested on:
 
 * Debian 5.0, 6.0
-* Ubuntu 10.04-12.04
-* CentOS 5.5-5.8, 6.2-6.3
-* Mac OS X 10.7.2
+* CentOS 6.4
 
 See TESTING.md for information about running tests in Opscode's Test
 Kitchen.
