@@ -94,7 +94,6 @@ end
 node['mariadb']['server']['packages'].each do |package_name|
   package package_name do
     action :install
-    notifies :start, "service[mysql]", :immediately
   end
 end
 
@@ -162,14 +161,6 @@ else
   end
 end
 
-# set the root password for situations that don't support pre-seeding.
-# (eg. platforms other than debian/ubuntu & drop-in mysql replacements)
-execute "assign-root-password" do
-  command "\"#{node['mariadb']['mariadbadmin_bin']}\" -u root password \"#{node['mariadb']['server_root_password']}\""
-  action :run
-  only_if "\"#{node['mariadb']['mariadb_bin']}\" -u root -e 'show databases;'"
-end
-
 unless platform_family?(%w{mac_os_x})
   grants_path = node['mariadb']['grants_path']
 
@@ -219,4 +210,12 @@ unless platform_family?(%w{mac_os_x})
   service "mysql" do
     action :start
   end
+end
+
+# set the root password for situations that don't support pre-seeding.
+# (eg. platforms other than debian/ubuntu & drop-in mysql replacements)
+execute "assign-root-password" do
+  command "\"#{node['mariadb']['mariadbadmin_bin']}\" -u root password \"#{node['mariadb']['server_root_password']}\""
+  action :run
+  only_if "\"#{node['mariadb']['mariadb_bin']}\" -u root -e 'show databases;'"
 end
