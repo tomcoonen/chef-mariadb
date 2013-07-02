@@ -177,20 +177,6 @@ unless platform_family?(%w{mac_os_x})
     end
   end
 
-  if platform_family? 'windows'
-    windows_batch "mysql-install-privileges" do
-      command "\"#{node['mariadb']['mariadb_bin']}\" -u root #{node['mariadb']['server_root_password'].empty? ? '' : '-p' }\"#{node['mariadb']['server_root_password']}\" < \"#{grants_path}\""
-      action :nothing
-      subscribes :run, resources("template[#{grants_path}]"), :immediately
-    end
-  else
-    execute "mysql-install-privileges" do
-      command %Q["#{node['mariadb']['mariadb_bin']}" -u root #{node['mariadb']['server_root_password'].empty? ? '' : '-p' }"#{node['mariadb']['server_root_password']}" < "#{grants_path}"]
-      action :nothing
-      subscribes :run, resources("template[#{grants_path}]"), :immediately
-    end
-  end
-
   template "#{node['mariadb']['conf_dir']}/my.cnf" do
     source "my.cnf.erb"
     owner "root" unless platform? 'windows'
@@ -205,6 +191,20 @@ unless platform_family?(%w{mac_os_x})
       Chef::Log.info "my.cnf updated but mysql.reload_action is #{node['mariadb']['reload_action']}. No action taken."
     end
     variables :skip_federated => skip_federated
+  end
+
+  if platform_family? 'windows'
+    windows_batch "mysql-install-privileges" do
+      command "\"#{node['mariadb']['mariadb_bin']}\" -u root #{node['mariadb']['server_root_password'].empty? ? '' : '-p' }\"#{node['mariadb']['server_root_password']}\" < \"#{grants_path}\""
+      action :nothing
+      subscribes :run, resources("template[#{grants_path}]"), :immediately
+    end
+  else
+    execute "mysql-install-privileges" do
+      command %Q["#{node['mariadb']['mariadb_bin']}" -u root #{node['mariadb']['server_root_password'].empty? ? '' : '-p' }"#{node['mariadb']['server_root_password']}" < "#{grants_path}"]
+      action :nothing
+      subscribes :run, resources("template[#{grants_path}]"), :immediately
+    end
   end
 
   service "mysql" do
