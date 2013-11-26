@@ -29,7 +29,7 @@ when "debian"
   include_recipe "apt"
 
   apt_repository "mariadb" do
-    uri "http://ftp.osuosl.org/pub/mariadb/repo/#{node[:mariadb][:version]}/debian"
+    uri "http://ftp.osuosl.org/pub/mariadb/repo/#{node[:mariadb][:version]}/#{node[:platform]}"
     distribution node['lsb']['codename']
     components ['main']
     keyserver "keyserver.ubuntu.com"
