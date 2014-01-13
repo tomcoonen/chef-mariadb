@@ -1,9 +1,9 @@
 case node['platform_family']
 when 'mac_os_x'
-  default['mysql']['server']['packages']      = %w[mysql]
-  default['mysql']['basedir']                 = '/usr/local/Cellar'
-  default['mysql']['data_dir']                = '/usr/local/var/mysql'
-  default['mysql']['root_group']              = 'admin'
-  default['mysql']['mysqladmin_bin']          = '/usr/local/bin/mysqladmin'
-  default['mysql']['mysql_bin']               = '/usr/local/bin/mysql'
+  default['mariadb']['server']['packages']      = %w[mariadb]
+  default['mariadb']['basedir']                 = '/usr/local/Cellar'
+  default['mariadb']['data_dir']                = '/usr/local/var/mysql'
+  default['mariadb']['root_group']              = 'admin'
+  default['mariadb']['mysqladmin_bin']          = '/usr/local/bin/mysqladmin'
+  default['mariadb']['mysql_bin']               = '/usr/local/bin/mysql'
 end

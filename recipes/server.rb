@@ -61,22 +61,20 @@ unless node['mariadb']['replication']['master'].nil? and node['mariadb']['replic
   end
 end
 
-if node['mariadb']['replication']['master'] == true
-  template "#{node['mariadb']['data_dir']}/replication_master_script" do
-    source "replication_master_script.erb"
-    owner "root" unless platform? 'windows'
-    group node['mariadb']['root_group'] unless platform? 'windows'
-    mode "0600"
-  end
+template "#{node['mariadb']['data_dir']}/replication_master_script" do
+  source "replication_master_script.erb"
+  owner "root" unless platform? 'windows'
+  group node['mariadb']['root_group'] unless platform? 'windows'
+  mode "0600"
+  only_if { node['mariadb']['replication']['master'] == true }
 end
 
-if node['mariadb']['replication']['slave'] == true
-  template "#{node['mariadb']['data_dir']}/replication_slave_script" do
-    source "replication_slave_script.erb"
-    owner "root" unless platform? 'windows'
-    group node['mariadb']['root_group'] unless platform? 'windows'
-    mode "0600"
-  end
+template "#{node['mariadb']['data_dir']}/replication_slave_script" do
+  source "replication_slave_script.erb"
+  owner "root" unless platform? 'windows'
+  group node['mariadb']['root_group'] unless platform? 'windows'
+  mode "0600"
+  only_if { node['mariadb']['replication']['slave'] == true }
 end
 
 case node['platform_family']

@@ -17,25 +17,25 @@
 # limitations under the License.
 #
 
-if node.attribute?('ec2') && !FileTest.directory?(node['mysql']['ec2_path'])
+if node.attribute?('ec2') && !FileTest.directory?(node['mariadb']['ec2_path'])
   service 'mysql' do
     action :stop
   end
 
   execute 'install-mysql' do
-    command "mv #{node['mysql']['data_dir']} #{node['mysql']['ec2_path']}"
-    not_if { FileTest.directory?(node['mysql']['ec2_path']) }
+    command "mv #{node['mariadb']['data_dir']} #{node['mariadb']['ec2_path']}"
+    not_if { FileTest.directory?(node['mariadb']['ec2_path']) }
   end
 
-  [node['mysql']['ec2_path'], node['mysql']['data_dir']].each do |dir|
+  [node['mariadb']['ec2_path'], node['mariadb']['data_dir']].each do |dir|
     directory dir do
-      owner 'mysql'
-      group 'mysql'
+      owner 'mariadb'
+      group 'mariadb'
     end
   end
 
-  mount node['mysql']['data_dir'] do
-    device   node['mysql']['ec2_path']
+  mount node['mariadb']['data_dir'] do
+    device   node['mariadb']['ec2_path']
     fstype  'none'
     options 'bind,rw'
     action  [:mount, :enable]

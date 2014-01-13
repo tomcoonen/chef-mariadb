@@ -27,7 +27,6 @@ when "rhel", "fedora"
 when "suse"
   default['mariadb']['client']['packages'] = %w{mariadb-community-server-client libmariadbclient-devel}
 when "debian"
-  default['mariadb']['version'] = "5.5"
   if debian_before_squeeze? || ubuntu_before_lucid?
     default['mariadb']['client']['packages'] = %w{mariadb-client libmariadbclient15-dev}
   else

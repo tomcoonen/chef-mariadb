@@ -1,19 +1,19 @@
 
 #----
 
-group 'mysql' do
+group 'mariadb' do
   action :create
 end
 
-user 'mysql' do
+user 'mariadb' do
   comment 'MySQL Server'
-  gid     'mysql'
+  gid     'mariadb'
   system  true
-  home    node['mysql']['data_dir']
+  home    node['mariadb']['data_dir']
   shell   '/sbin/nologin'
 end
 
-node['mysql']['server']['packages'].each do |name|
+node['mariadb']['server']['packages'].each do |name|
   package name do
     action   :install
     notifies :start, 'service[mysql]', :immediately
@@ -23,18 +23,18 @@ end
 #----
 
 execute 'mysql-install-db' do
-  command     "mysql_install_db --verbose --user=`whoami` --basedir=\"$(brew --prefix mysql)\" --datadir=#{node['mysql']['data_dir']} --tmpdir=/tmp"
+  command     "mysql_install_db --verbose --user=`whoami` --basedir=\"$(brew --prefix mysql)\" --datadir=#{node['mariadb']['data_dir']} --tmpdir=/tmp"
   environment('TMPDIR' => nil)
   action      :run
-  creates     "#{node['mysql']['data_dir']}/mysql"
+  creates     "#{node['mariadb']['data_dir']}/mysql"
 end
 
 # set the root password for situations that don't support pre-seeding.
 # (eg. platforms other than debian/ubuntu & drop-in mysql replacements)
 execute 'assign-root-password mac_os_x' do
-  command %Q["#{node['mysql']['mysqladmin_bin']}" -u root password '#{node['mysql']['server_root_password']}']
+  command %Q["#{node['mariadb']['mysqladmin_bin']}" -u root password '#{node['mariadb']['server_root_password']}']
   action :run
-  only_if %Q["#{node['mysql']['mysql_bin']}" -u root -e 'show databases;']
+  only_if %Q["#{node['mariadb']['mysql_bin']}" -u root -e 'show databases;']
 end
 
 #----

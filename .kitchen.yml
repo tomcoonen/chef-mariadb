@@ -5,13 +5,13 @@ driver_config:
 
 platforms:
 - name: centos-5.9
-- name: centos-6.4
+- name: centos-6.5
 - name: ubuntu-12.04
 - name: debian-7.1.0
 
 suites:
-- name: default
+- name: clients
   run_list:
     - recipe[base-box-prep]
-    - recipe[mariadb]
+    - recipe[mariadb::client]
   attributes:

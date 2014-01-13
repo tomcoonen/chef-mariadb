@@ -19,15 +19,15 @@
 
 # Probably driven from wrapper cookbooks, environments, or roles.
 # # Keep in this namespace for backwards compat
-default['mariadb']['bind_address']              = node.attribute?('cloud') ? node.cloud['local_ipv4'] : node['ipaddress']
+default['mariadb']['bind_address']              = node.attribute?('cloud') ? node['cloud']['local_ipv4'] : node['ipaddress']
 default['mariadb']['port']                      = 3306
 default['mariadb']['nice']                      = 0
 
 # eventually remove?  where is this used?
 if attribute?('ec2')
-  default['mysql']['ec2_path']    = '/mnt/mysql'
-  default['mysql']['ebs_vol_dev'] = '/dev/sdi'
-  default['mysql']['ebs_vol_size'] = 50
+  default['mariadb']['ec2_path']    = '/mnt/mysql'
+  default['mariadb']['ebs_vol_dev'] = '/dev/sdi'
+  default['mariadb']['ebs_vol_size'] = 50
 end
 
 # actual config starts here
@@ -118,9 +118,9 @@ if node['cpu'].nil? or node['cpu']['total'].nil?
   default['mariadb']['tunable']['innodb_commit_concurrency']       = "8"
   default['mariadb']['tunable']['innodb_read_io_threads']          = "8"
 else
-  default['mariadb']['tunable']['innodb_thread_concurrency']       = "#{(Integer(node['cpu']['total'])) * 2}"
-  default['mariadb']['tunable']['innodb_commit_concurrency']       = "#{(Integer(node['cpu']['total'])) * 2}"
-  default['mariadb']['tunable']['innodb_read_io_threads']          = "#{(Integer(node['cpu']['total'])) * 2}"
+  default['mariadb']['tunable']['innodb_thread_concurrency']       = Integer(node['cpu']['total'])) * 2
+  default['mariadb']['tunable']['innodb_commit_concurrency']       = Integer(node['cpu']['total'])) * 2
+  default['mariadb']['tunable']['innodb_read_io_threads']          = Integer(node['cpu']['total'])) * 2
 end
 default['mariadb']['tunable']['innodb_flush_log_at_trx_commit']  = "1"
 default['mariadb']['tunable']['innodb_support_xa']               = true
