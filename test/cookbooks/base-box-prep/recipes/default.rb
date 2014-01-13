@@ -9,6 +9,6 @@
 # on mariadb. Since installing mariadb involves replacing libmysql pieces, this
 # fails on some platforms. For the purposes of testing, we'll just uninstall
 # various packages which conflict.
-package "postfix" do
+package 'postfix' do
   action :remove
 end

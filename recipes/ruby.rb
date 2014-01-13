@@ -21,8 +21,8 @@
 #
 
 node.set['build_essential']['compiletime'] = true
-include_recipe "build-essential::default"
-include_recipe "mariadb::client"
+include_recipe 'build-essential::default'
+include_recipe 'mariadb::client'
 
 node['mariadb']['client']['packages'].each do |name|
   resources("package[#{name}]").run_action(:install)

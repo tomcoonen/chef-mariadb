@@ -25,28 +25,28 @@
 #
 
 case node['platform_family']
-when "debian"
-  include_recipe "apt"
+when 'debian'
+  include_recipe 'apt'
 
-  apt_repository "mariadb" do
+  apt_repository 'mariadb' do
     uri "http://ftp.osuosl.org/pub/mariadb/repo/#{node['mariadb']['version']}/#{node['platform']}"
     distribution node['lsb']['codename']
     components ['main']
-    #keyserver "keyserver.ubuntu.com"
-    #key "0xcbcb082a1bb943db"
+    # keyserver "keyserver.ubuntu.com"
+    # key "0xcbcb082a1bb943db"
     action :add
   end
 
-when "rhel", "fedora"
-  include_recipe "yum"
-  
+when 'rhel', 'fedora'
+  include_recipe 'yum'
+
   arch = node['kernel']['machine']
-  arch = "x86" unless arch == "amd64"
+  arch = 'x86' unless arch == 'amd64'
   pversion = node['platform_version'].split('.').first
 
-  yum_repository "mariadb" do
-    description "MariaDB Repository"
+  yum_repository 'mariadb' do
+    description 'MariaDB Repository'
     baseurl     "http://yum.mariadb.org/#{node['mariadb']['version']}/#{node['platform']}#{pversion}-#{arch}"
-    gpgkey      "https://yum.mariadb.org/RPM-GPG-KEY-MariaDB"
+    gpgkey      'https://yum.mariadb.org/RPM-GPG-KEY-MariaDB'
   end
 end

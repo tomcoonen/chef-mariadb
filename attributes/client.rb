@@ -22,21 +22,21 @@
 ::Chef::Node.send(:include, Opscode::Mysql::Helpers)
 
 case node['platform_family']
-when "rhel", "fedora"
+when 'rhel', 'fedora'
   default['mariadb']['client']['packages'] = %w{MariaDB-client MariaDB-devel}
-when "suse"
+when 'suse'
   default['mariadb']['client']['packages'] = %w{mariadb-community-server-client libmariadbclient-devel}
-when "debian"
+when 'debian'
   if debian_before_squeeze? || ubuntu_before_lucid?
     default['mariadb']['client']['packages'] = %w{mariadb-client libmariadbclient15-dev}
   else
     default['mariadb']['client']['packages'] = %w{mariadb-client libmariadbclient-dev}
   end
-when "freebsd"
+when 'freebsd'
   default['mariadb']['client']['packages'] = %w{mariadb55-client}
-when "windows"
-  default['mariadb']['client']['version']      = "6.0.2"
-  default['mariadb']['client']['arch']         = "win32" # force 32 bit to work with mariadb gem
+when 'windows'
+  default['mariadb']['client']['version']      = '6.0.2'
+  default['mariadb']['client']['arch']         = 'win32' # force 32 bit to work with mariadb gem
   default['mariadb']['client']['package_file'] = "mariadb-connector-c-#{mariadb['client']['version']}-#{mariadb['client']['arch']}.msi"
   default['mariadb']['client']['url']          = "http://www.mariadb.com/get/Downloads/Connector-C/#{mariadb['client']['package_file']}/from/http://mariadb.mirrors.pair.com/"
   default['mariadb']['client']['packages']     = ["MariaDB Connector C #{mariadb['client']['version']}"]
@@ -45,9 +45,8 @@ when "windows"
   default['mariadb']['client']['lib_dir']      = "#{mariadb['client']['basedir']}\\lib/opt"
   default['mariadb']['client']['bin_dir']      = "#{mariadb['client']['basedir']}\\bin"
   default['mariadb']['client']['ruby_dir']     = RbConfig::CONFIG['bindir']
-when "mac_os_x"
+when 'mac_os_x'
   default['mariadb']['client']['packages'] = %w{mariadb-connector-c}
 else
   default['mariadb']['client']['packages'] = %w{mariadb-client libmariadbclient-dev}
 end
-

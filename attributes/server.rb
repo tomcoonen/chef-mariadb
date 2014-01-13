@@ -38,38 +38,38 @@ default['mariadb']['allow_remote_root']               = false
 default['mariadb']['remove_anonymous_users']          = false
 default['mariadb']['remove_test_database']            = false
 default['mariadb']['root_network_acl']                = nil
-default['mariadb']['tunable']['character-set-server'] = "utf8"
-default['mariadb']['tunable']['collation-server']     = "utf8_general_ci"
+default['mariadb']['tunable']['character-set-server'] = 'utf8'
+default['mariadb']['tunable']['collation-server']     = 'utf8_general_ci'
 default['mariadb']['tunable']['lower_case_table_names']  = nil
-default['mariadb']['tunable']['back_log']             = "128"
-default['mariadb']['tunable']['key_buffer_size']           = "256M"
-default['mariadb']['tunable']['myisam_sort_buffer_size']   = "8M"
-default['mariadb']['tunable']['myisam_max_sort_file_size'] = "2147483648"
-default['mariadb']['tunable']['myisam_repair_threads']     = "1"
-default['mariadb']['tunable']['myisam-recover']            = "BACKUP"
-default['mariadb']['tunable']['max_allowed_packet']   = "16M"
-default['mariadb']['tunable']['max_connections']      = "800"
-default['mariadb']['tunable']['max_connect_errors']   = "10"
-default['mariadb']['tunable']['concurrent_insert']    = "2"
-default['mariadb']['tunable']['connect_timeout']      = "10"
-default['mariadb']['tunable']['tmp_table_size']       = "32M"
+default['mariadb']['tunable']['back_log']             = '128'
+default['mariadb']['tunable']['key_buffer_size']           = '256M'
+default['mariadb']['tunable']['myisam_sort_buffer_size']   = '8M'
+default['mariadb']['tunable']['myisam_max_sort_file_size'] = '2147483648'
+default['mariadb']['tunable']['myisam_repair_threads']     = '1'
+default['mariadb']['tunable']['myisam-recover']            = 'BACKUP'
+default['mariadb']['tunable']['max_allowed_packet']   = '16M'
+default['mariadb']['tunable']['max_connections']      = '800'
+default['mariadb']['tunable']['max_connect_errors']   = '10'
+default['mariadb']['tunable']['concurrent_insert']    = '2'
+default['mariadb']['tunable']['connect_timeout']      = '10'
+default['mariadb']['tunable']['tmp_table_size']       = '32M'
 default['mariadb']['tunable']['max_heap_table_size']  = node['mariadb']['tunable']['tmp_table_size']
 default['mariadb']['tunable']['bulk_insert_buffer_size'] = node['mariadb']['tunable']['tmp_table_size']
-default['mariadb']['tunable']['net_read_timeout']     = "30"
-default['mariadb']['tunable']['net_write_timeout']    = "30"
-default['mariadb']['tunable']['table_cache']          = "128"
+default['mariadb']['tunable']['net_read_timeout']     = '30'
+default['mariadb']['tunable']['net_write_timeout']    = '30'
+default['mariadb']['tunable']['table_cache']          = '128'
 default['mariadb']['tunable']['table_open_cache']     = node['mariadb']['tunable']['table_cache'] # table_cache is deprecated
                                                                                                   # in favor of table_open_cache
 
 default['mariadb']['tunable']['thread_cache_size']    = 8
 default['mariadb']['tunable']['thread_concurrency']   = 10
-default['mariadb']['tunable']['thread_stack']         = "256K"
-default['mariadb']['tunable']['sort_buffer_size']     = "2M"
-default['mariadb']['tunable']['read_buffer_size']     = "128k"
-default['mariadb']['tunable']['read_rnd_buffer_size'] = "256k"
-default['mariadb']['tunable']['join_buffer_size']     = "128k"
-default['mariadb']['tunable']['wait_timeout']         = "180"
-default['mariadb']['tunable']['open-files-limit']     = "1024"
+default['mariadb']['tunable']['thread_stack']         = '256K'
+default['mariadb']['tunable']['sort_buffer_size']     = '2M'
+default['mariadb']['tunable']['read_buffer_size']     = '128k'
+default['mariadb']['tunable']['read_rnd_buffer_size'] = '256k'
+default['mariadb']['tunable']['join_buffer_size']     = '128k'
+default['mariadb']['tunable']['wait_timeout']         = '180'
+default['mariadb']['tunable']['open-files-limit']     = '1024'
 
 default['mariadb']['tunable']['sql_mode'] = nil
 
@@ -102,55 +102,55 @@ default['mariadb']['tunable']['log_warnings']                    = false
 default['mariadb']['tunable']['log_queries_not_using_index']     = true
 default['mariadb']['tunable']['log_bin_trust_function_creators'] = false
 
-default['mariadb']['tunable']['innodb_log_file_size']            = "5M"
-default['mariadb']['tunable']['innodb_buffer_pool_size']         = "128M"
-default['mariadb']['tunable']['innodb_buffer_pool_instances']    = "4"
-default['mariadb']['tunable']['innodb_additional_mem_pool_size'] = "8M"
-default['mariadb']['tunable']['innodb_data_file_path']           = "ibdata1:10M:autoextend"
+default['mariadb']['tunable']['innodb_log_file_size']            = '5M'
+default['mariadb']['tunable']['innodb_buffer_pool_size']         = '128M'
+default['mariadb']['tunable']['innodb_buffer_pool_instances']    = '4'
+default['mariadb']['tunable']['innodb_additional_mem_pool_size'] = '8M'
+default['mariadb']['tunable']['innodb_data_file_path']           = 'ibdata1:10M:autoextend'
 default['mariadb']['tunable']['innodb_flush_method']             = false
-default['mariadb']['tunable']['innodb_log_buffer_size']          = "8M"
-default['mariadb']['tunable']['innodb_write_io_threads']         = "4"
-default['mariadb']['tunable']['innodb_io_capacity']              = "200"
+default['mariadb']['tunable']['innodb_log_buffer_size']          = '8M'
+default['mariadb']['tunable']['innodb_write_io_threads']         = '4'
+default['mariadb']['tunable']['innodb_io_capacity']              = '200'
 default['mariadb']['tunable']['innodb_file_per_table']           = true
-default['mariadb']['tunable']['innodb_lock_wait_timeout']        = "60"
-if node['cpu'].nil? or node['cpu']['total'].nil?
-  default['mariadb']['tunable']['innodb_thread_concurrency']       = "8"
-  default['mariadb']['tunable']['innodb_commit_concurrency']       = "8"
-  default['mariadb']['tunable']['innodb_read_io_threads']          = "8"
+default['mariadb']['tunable']['innodb_lock_wait_timeout']        = '60'
+if node['cpu'].nil? || node['cpu']['total'].nil?
+  default['mariadb']['tunable']['innodb_thread_concurrency']       = '8'
+  default['mariadb']['tunable']['innodb_commit_concurrency']       = '8'
+  default['mariadb']['tunable']['innodb_read_io_threads']          = '8'
 else
-  default['mariadb']['tunable']['innodb_thread_concurrency']       = Integer(node['cpu']['total'])) * 2
-  default['mariadb']['tunable']['innodb_commit_concurrency']       = Integer(node['cpu']['total'])) * 2
-  default['mariadb']['tunable']['innodb_read_io_threads']          = Integer(node['cpu']['total'])) * 2
+  default['mariadb']['tunable']['innodb_thread_concurrency']       = Integer(node['cpu']['total']) * 2
+  default['mariadb']['tunable']['innodb_commit_concurrency']       = Integer(node['cpu']['total']) * 2
+  default['mariadb']['tunable']['innodb_read_io_threads']          = Integer(node['cpu']['total']) * 2
 end
-default['mariadb']['tunable']['innodb_flush_log_at_trx_commit']  = "1"
+default['mariadb']['tunable']['innodb_flush_log_at_trx_commit']  = '1'
 default['mariadb']['tunable']['innodb_support_xa']               = true
 default['mariadb']['tunable']['innodb_table_locks']              = true
 default['mariadb']['tunable']['skip-innodb-doublewrite']         = false
 
 default['mariadb']['tunable']['transaction-isolation'] = nil
 
-default['mariadb']['tunable']['query_cache_limit']    = "1M"
-default['mariadb']['tunable']['query_cache_size']     = "16M"
+default['mariadb']['tunable']['query_cache_limit']    = '1M'
+default['mariadb']['tunable']['query_cache_size']     = '16M'
 
 default['mariadb']['tunable']['long_query_time']      = 2
 default['mariadb']['tunable']['expire_logs_days']     = 10
-default['mariadb']['tunable']['max_binlog_size']      = "100M"
-default['mariadb']['tunable']['binlog_cache_size']    = "32K"
+default['mariadb']['tunable']['max_binlog_size']      = '100M'
+default['mariadb']['tunable']['binlog_cache_size']    = '32K'
 
-default['mariadb']['tmpdir'] = ["/tmp"]
+default['mariadb']['tmpdir'] = ['/tmp']
 
-#default['mariadb']['log_dir'] = node['mariadb']['data_dir']
+# default['mariadb']['log_dir'] = node['mariadb']['data_dir']
 default['mariadb']['log_files_in_group'] = false
 default['mariadb']['innodb_status_file'] = false
 
-default['mariadb']['tunable']['log_slow_queries']     = "/var/log/mysql/slow.log"
+default['mariadb']['tunable']['log_slow_queries']     = '/var/log/mysql/slow.log'
 default['mariadb']['tunable']['slow_query_log']       = node['mariadb']['tunable']['log_slow_queries'] # log_slow_queries is deprecated
 
 unless node['platform_family'] == 'rhel' && node['platform_version'].to_i < 6
   # older RHEL platforms don't support these options
   default['mariadb']['tunable']['event_scheduler']  = 0
-  default['mariadb']['tunable']['table_open_cache'] = "128"
-  default['mariadb']['tunable']['binlog_format']    = "statement" if node['mariadb']['tunable']['log_bin']
+  default['mariadb']['tunable']['table_open_cache'] = '128'
+  default['mariadb']['tunable']['binlog_format']    = 'statement' if node['mariadb']['tunable']['log_bin']
 end
 
 default['mariadb']['replication']['master'] = nil

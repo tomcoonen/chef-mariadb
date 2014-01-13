@@ -21,7 +21,7 @@
 # to debian_before_squeeze? and ubuntu_before_lucid?
 ::Chef::Recipe.send(:include, Opscode::Mysql::Helpers)
 
-include_recipe "mariadb::mariadb_repo"
+include_recipe 'mariadb::mariadb_repo'
 
 case node['platform']
 when 'windows'
