@@ -2,7 +2,7 @@
 # Cookbook Name:: mariadb
 # Attributes:: server
 #
-# Copyright 2008-2009, Opscode, Inc.
+# Copyright 2008-2013, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,127 +17,20 @@
 # limitations under the License.
 #
 
+# Probably driven from wrapper cookbooks, environments, or roles.
+# # Keep in this namespace for backwards compat
 default['mariadb']['bind_address']              = node.attribute?('cloud') ? node.cloud['local_ipv4'] : node['ipaddress']
 default['mariadb']['port']                      = 3306
 default['mariadb']['nice']                      = 0
 
-case node["platform_family"]
-when "debian"
-  default['mariadb']['server']['packages']      = %w{mariadb-server}
-  default['mariadb']['service_name']            = "mariadb"
-  default['mariadb']['basedir']                 = "/usr"
-  default['mariadb']['data_dir']                = "/var/lib/mysql"
-  default['mariadb']['root_group']              = "root"
-  default['mariadb']['mariadbadmin_bin']        = "/usr/bin/mysqladmin"
-  default['mariadb']['mariadb_bin']             = "/usr/bin/mysql"
-
-  default['mariadb']['conf_dir']                = '/etc/mysql'
-  default['mariadb']['confd_dir']               = '/etc/mysql/conf.d'
-  default['mariadb']['socket']                  = "/var/run/mysqld/mysqld.sock"
-  default['mariadb']['pid_file']                = "/var/run/mysqld/mysqld.pid"
-  default['mariadb']['old_passwords']           = 0
-  default['mariadb']['grants_path']             = "/etc/mysql/grants.sql"
-
-when "rhel", "fedora"
-  default['mariadb']['service_name']            = "mysql"
-  default['mariadb']['pid_file']                = "/var/run/mysql/mysql.pid"
-  default['mariadb']['server']['packages']      = %w{MariaDB-server}
-  default['mariadb']['basedir']                 = "/usr"
-  default['mariadb']['data_dir']                = "/var/lib/mysql"
-  default['mariadb']['root_group']              = "root"
-  default['mariadb']['mariadbadmin_bin']        = "/usr/bin/mysqladmin"
-  default['mariadb']['mariadb_bin']             = "/usr/bin/mysql"
-  default['mariadb']['version']                 = '5.5'
-  default['mariadb']['conf_dir']                = '/etc'
-  default['mariadb']['confd_dir']               = '/etc/mysql/conf.d'
-  default['mariadb']['socket']                  = "/var/lib/mysql/mysql.sock"
-  default['mariadb']['old_passwords']           = 1
-  default['mariadb']['grants_path']             = "/etc/mysql_grants.sql"
-
-when "suse"
-  default['mariadb']['service_name']            = "mariadb"
-  default['mariadb']['server']['packages']      = %w{mariadb-community-server}
-  default['mariadb']['basedir']                 = "/usr"
-  default['mariadb']['data_dir']                = "/var/lib/mysql"
-  default['mariadb']['root_group']              = "root"
-  default['mariadb']['mariadbadmin_bin']        = "/usr/bin/mysqladmin"
-  default['mariadb']['mariadb_bin']             = "/usr/bin/mysql"
-  default['mariadb']['conf_dir']                = '/etc'
-  default['mariadb']['confd_dir']               = '/etc/mysql/conf.d'
-  default['mariadb']['socket']                  = "/var/run/mysql/mysql.sock"
-  default['mariadb']['pid_file']                = "/var/run/mysql/mysqld.pid"
-  default['mariadb']['old_passwords']           = 1
-  default['mariadb']['grants_path']             = "/etc/mysql_grants.sql"
-
-when "freebsd"
-  default['mariadb']['server']['packages']      = %w{mariadb55-server}
-  default['mariadb']['service_name']            = "mariadb-server"
-  default['mariadb']['basedir']                 = "/usr/local"
-  default['mariadb']['data_dir']                = "/var/db/mariadb"
-  default['mariadb']['root_group']              = "wheel"
-  default['mariadb']['mariadbadmin_bin']        = "/usr/local/bin/mysqladmin"
-  default['mariadb']['mariadb_bin']             = "/usr/local/bin/mysql"
-
-  default['mariadb']['conf_dir']                = '/usr/local/etc'
-  default['mariadb']['confd_dir']               = '/usr/local/etc/mysql/conf.d'
-  default['mariadb']['socket']                  = "/tmp/mysqld.sock"
-  default['mariadb']['pid_file']                = "/var/run/mysqld/mysqld.pid"
-  default['mariadb']['old_passwords']           = 0
-  default['mariadb']['grants_path']             = "/var/db/mysql/grants.sql"
-
-when "windows"
-  default['mariadb']['server']['packages']      = ["MariaDB Server 5.5"]
-  default['mariadb']['version']                 = '5.5.21'
-  default['mariadb']['arch']                    = 'win32'
-  default['mariadb']['package_file']            = "mariadb-#{mariadb['version']}-#{mariadb['arch']}.msi"
-  default['mariadb']['url']                     = "http://www.mariadb.com/get/Downloads/MariaDB-5.5/#{mariadb['package_file']}/from/http://mariadb.mirrors.pair.com/"
-
-  default['mariadb']['service_name']            = "mariadb"
-  default['mariadb']['basedir']                 = "#{ENV['SYSTEMDRIVE']}\\Program Files (x86)\\MariaDB\\#{mariadb['server']['packages'].first}"
-  default['mariadb']['data_dir']                = "#{node['mariadb']['basedir']}\\Data"
-  default['mariadb']['bin_dir']                 = "#{node['mariadb']['basedir']}\\bin"
-  default['mariadb']['mariadbadmin_bin']        = "#{node['mariadb']['bin_dir']}\\mysqladmin"
-  default['mariadb']['mariadb_bin']             = "#{node['mariadb']['bin_dir']}\\mysql"
-
-  default['mariadb']['conf_dir']                = node['mariadb']['basedir']
-  default['mariadb']['old_passwords']           = 0
-  default['mariadb']['grants_path']             = "#{node['mariadb']['conf_dir']}\\grants.sql"
-
-when "mac_os_x"
-  default['mariadb']['server']['packages']      = %w{mariadb}
-  default['mariadb']['basedir']                 = "/usr/local/Cellar"
-  default['mariadb']['data_dir']                = "/usr/local/var/mariadb"
-  default['mariadb']['root_group']              = "admin"
-  default['mariadb']['mariadbadmin_bin']        = "/usr/local/bin/mysqladmin"
-  default['mariadb']['mariadb_bin']             = "/usr/local/bin/mysql"
-
-else
-  default['mariadb']['server']['packages']      = %w{mariadb-server}
-  default['mariadb']['service_name']            = "mariadb"
-  default['mariadb']['basedir']                 = "/usr"
-  default['mariadb']['data_dir']                = "/var/lib/mysql"
-  default['mariadb']['root_group']              = "root"
-  default['mariadb']['mariadbadmin_bin']        = "/usr/bin/mysqladmin"
-  default['mariadb']['mariadb_bin']             = "/usr/bin/mysql"
-
-  default['mariadb']['conf_dir']                = '/etc/mysql'
-  default['mariadb']['confd_dir']               = '/etc/mysql/conf.d'
-  default['mariadb']['socket']                  = "/var/run/mysqld/mysqld.sock"
-  default['mariadb']['pid_file']                = "/var/run/mysqld/mysqld.pid"
-  default['mariadb']['old_passwords']           = 0
-  default['mariadb']['grants_path']             = "/etc/mysql/grants.sql"
-end
-
+# eventually remove?  where is this used?
 if attribute?('ec2')
-  default['mariadb']['ec2_path']    = "/mnt/mariadb"
-  default['mariadb']['ebs_vol_dev'] = "/dev/sdi"
-  default['mariadb']['ebs_vol_size'] = 50
+  default['mysql']['ec2_path']    = '/mnt/mysql'
+  default['mysql']['ebs_vol_dev'] = '/dev/sdi'
+  default['mysql']['ebs_vol_size'] = 50
 end
 
-default['mariadb']['reload_action'] = "restart" # or "reload" or "none"
-
-default['mariadb']['use_upstart'] = node['platform'] == "ubuntu" && node['platform_version'].to_f >= 10.04
-
+# actual config starts here
 default['mariadb']['auto-increment-increment']        = 1
 default['mariadb']['auto-increment-offset']           = 1
 
@@ -165,6 +58,8 @@ default['mariadb']['tunable']['bulk_insert_buffer_size'] = node['mariadb']['tuna
 default['mariadb']['tunable']['net_read_timeout']     = "30"
 default['mariadb']['tunable']['net_write_timeout']    = "30"
 default['mariadb']['tunable']['table_cache']          = "128"
+default['mariadb']['tunable']['table_open_cache']     = node['mariadb']['tunable']['table_cache'] # table_cache is deprecated
+                                                                                                  # in favor of table_open_cache
 
 default['mariadb']['tunable']['thread_cache_size']    = 8
 default['mariadb']['tunable']['thread_concurrency']   = 10
@@ -190,6 +85,13 @@ default['mariadb']['tunable']['log_bin_trust_function_creators'] = false
 default['mariadb']['tunable']['relay_log']                       = nil
 default['mariadb']['tunable']['relay_log_index']                 = nil
 default['mariadb']['tunable']['log_slave_updates']               = false
+
+default['mariadb']['tunable']['replicate_do_db']             = nil
+default['mariadb']['tunable']['replicate_do_table']          = nil
+default['mariadb']['tunable']['replicate_ignore_db']         = nil
+default['mariadb']['tunable']['replicate_ignore_table']      = nil
+default['mariadb']['tunable']['replicate_wild_do_table']     = nil
+default['mariadb']['tunable']['replicate_wild_ignore_table'] = nil
 
 default['mariadb']['tunable']['sync_binlog']                     = 0
 default['mariadb']['tunable']['skip_slave_start']                = false
@@ -230,22 +132,21 @@ default['mariadb']['tunable']['transaction-isolation'] = nil
 default['mariadb']['tunable']['query_cache_limit']    = "1M"
 default['mariadb']['tunable']['query_cache_size']     = "16M"
 
-default['mariadb']['tunable']['log_slow_queries']     = "/var/log/mysql/slow.log"
-default['mariadb']['tunable']['slow_query_log']       = node['mariadb']['tunable']['log_slow_queries'] # log_slow_queries is deprecated
-                                                                                                       # in favor of slow_query_log
 default['mariadb']['tunable']['long_query_time']      = 2
-
 default['mariadb']['tunable']['expire_logs_days']     = 10
 default['mariadb']['tunable']['max_binlog_size']      = "100M"
 default['mariadb']['tunable']['binlog_cache_size']    = "32K"
 
 default['mariadb']['tmpdir'] = ["/tmp"]
 
-default['mariadb']['log_dir'] = node['mariadb']['data_dir']
+#default['mariadb']['log_dir'] = node['mariadb']['data_dir']
 default['mariadb']['log_files_in_group'] = false
 default['mariadb']['innodb_status_file'] = false
 
-unless node['platform_family'] == "rhel" && node['platform_version'].to_i < 6
+default['mariadb']['tunable']['log_slow_queries']     = "/var/log/mysql/slow.log"
+default['mariadb']['tunable']['slow_query_log']       = node['mariadb']['tunable']['log_slow_queries'] # log_slow_queries is deprecated
+
+unless node['platform_family'] == 'rhel' && node['platform_version'].to_i < 6
   # older RHEL platforms don't support these options
   default['mariadb']['tunable']['event_scheduler']  = 0
   default['mariadb']['tunable']['table_open_cache'] = "128"
@@ -256,3 +157,20 @@ default['mariadb']['replication']['master'] = nil
 default['mariadb']['replication']['slave'] = nil
 default['mariadb']['replication']['user'] = nil
 default['mariadb']['replication']['secret'] = nil
+
+# security options
+# @see http://www.symantec.com/connect/articles/securing-mysql-step-step
+# @see http://dev.mysql.com/doc/refman/5.7/en/server-options.html#option_mysqld_chroot
+default['mariadb']['security']['chroot']                  = nil
+# @see http://dev.mysql.com/doc/refman/5.7/en/server-options.html#option_mysqld_safe-user-create
+default['mariadb']['security']['safe_user_create']        = nil
+# @see http://dev.mysql.com/doc/refman/5.7/en/server-options.html#option_mysqld_secure-auth
+default['mariadb']['security']['secure_auth']             = nil
+# @see http://dev.mysql.com/doc/refman/5.7/en/server-options.html#option_mysqld_symbolic-links
+default['mariadb']['security']['skip_symbolic_links']     = nil
+# @see http://dev.mysql.com/doc/refman/5.7/en/server-options.html#option_mysqld_secure-file-priv
+default['mariadb']['security']['secure_file_priv']        = nil
+# @see http://dev.mysql.com/doc/refman/5.7/en/server-options.html#option_mysqld_skip-show-database
+default['mariadb']['security']['skip_show_database']      = nil
+# @see http://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_local_infile
+default['mariadb']['security']['local_infile']            = nil

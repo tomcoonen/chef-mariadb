@@ -5,7 +5,7 @@
 # Author:: Jesse Howarth (<him@jessehowarth.com>)
 # Author:: Jamie Winsor (<jamie@vialstudios.com>)
 #
-# Copyright 2008-2012, Opscode, Inc.
+# Copyright 2008-2013, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,12 +21,11 @@
 #
 
 node.set['build_essential']['compiletime'] = true
-include_recipe "build-essential"
-include_recipe "mariadb::mariadb_repo"
+include_recipe "build-essential::default"
 include_recipe "mariadb::client"
 
-node['mariadb']['client']['packages'].each do |mariadb_pack|
-  resources("package[#{mariadb_pack}]").run_action(:install)
+node['mariadb']['client']['packages'].each do |name|
+  resources("package[#{name}]").run_action(:install)
 end
 
-chef_gem "mysql"
+chef_gem 'mysql2'
