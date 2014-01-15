@@ -44,7 +44,6 @@ nice            = <%= node['mariadb']['nice'] %>
 #
 
 user            = mysql
-<<<<<<< HEAD
 pid-file        = <%= node['mariadb']['server']['pid_file'] %>
 socket          = <%= node['mariadb']['server']['socket'] %>
 port            = <%= node['mariadb']['port'] %>
@@ -269,14 +268,14 @@ innodb_log_buffer_size  = <%= node['mariadb']['tunable']['innodb_log_buffer_size
 <%- if node['mariadb']['tunable']['innodb_adaptive_flushing'] %>
 innodb_adaptive_flushing  = <%= node['mariadb']['tunable']['innodb_adaptive_flushing'] %>
 <%- end %>
-<%- if node['mysql']['tunable']['innodb_adaptive_flushing_method'] %>
-innodb_adaptive_flushing_method = <%= node['mysql']['tunable']['innodb_adaptive_flushing_method'] %>
+<%- if node['mariadb']['tunable']['innodb_adaptive_flushing_method'] %>
+innodb_adaptive_flushing_method = <%= node['mariadb']['tunable']['innodb_adaptive_flushing_method'] %>
 <%- end %>
-<%- if node['mysql']['tunable']['innodb_adaptive_checkpoint'] %>
-innodb_adaptive_checkpoint = <%= node['mysql']['tunable']['innodb_adaptive_checkpoint'] %>
+<%- if node['mariadb']['tunable']['innodb_adaptive_checkpoint'] %>
+innodb_adaptive_checkpoint = <%= node['mariadb']['tunable']['innodb_adaptive_checkpoint'] %>
 <%- end %>
 
-<% if node['imariadb']['server']['skip_federated'] %>
+<% if node['mariadb']['server']['skip_federated'] %>
 #
 # * Federated
 #

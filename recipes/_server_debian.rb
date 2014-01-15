@@ -32,8 +32,8 @@ end
 
 node['mariadb']['server']['directories'].each do |key, value|
   directory value do
-    owner     'mariadb'
-    group     'mariadb'
+    owner     'mysql'
+    group     'mysql'
     mode      '0775'
     action    :create
     recursive true
@@ -68,8 +68,8 @@ end
 # run somewhere and read it. Implementing that will come in "The Future"
 
 directory node['mariadb']['data_dir'] do
-  owner     'mariadb'
-  group     'mariadb'
+  owner     'mysql'
+  group     'mysql'
   action    :create
   recursive true
 end
@@ -114,8 +114,8 @@ bash 'move mysql data to datadir' do
   not_if '[ `stat -c %h /var/lib/mysql/` -eq 2 ]'
 end
 
-service 'mariadb' do
-  service_name 'mariadb'
+service 'mysql' do
+  service_name 'mysql'
   supports     :status => true, :restart => true, :reload => true
   action       [:enable, :start]
 end

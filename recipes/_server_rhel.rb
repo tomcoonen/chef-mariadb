@@ -9,8 +9,8 @@ end
 #----
 node['mariadb']['server']['directories'].each do |key, value|
   directory value do
-    owner     'mariadb'
-    group     'mariadb'
+    owner     'mysql'
+    group     'mysql'
     mode      '0755'
     action    :create
     recursive true
@@ -18,8 +18,8 @@ node['mariadb']['server']['directories'].each do |key, value|
 end
 
 directory node['mariadb']['data_dir'] do
-  owner     'mariadb'
-  group     'mariadb'
+  owner     'mysql'
+  group     'mysql'
   action    :create
   recursive true
 end
@@ -79,7 +79,7 @@ template 'final-my.cnf' do
   notifies :reload, 'service[mysql]', :immediately
 end
 
-service 'mariadb' do
+service 'mysql' do
   service_name node['mariadb']['server']['service_name']
   supports     :status => true, :restart => true, :reload => true
   action       [:enable, :start]

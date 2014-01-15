@@ -83,9 +83,7 @@ Normally, root should only be allowed to connect from 'localhost'.  This ensures
 
 * `node['mariadb']['remove_test_database']` - Delete the test database and access to it.
 
-The following attributes are randomly generated passwords handled in the `mariadb::server` recipe, using the OpenSSL cookbook's `secure_password` helper method. These are set using the `set_unless` node attribute method, which allows them to be easily overridden e.g.
->>>>>>> upstream/master
-in a role.
+The following attributes are randomly generated passwords handled in the `mariadb::server` recipe, using the OpenSSL cookbook's `secure_password` helper method. These are set using the `set_unless` node attribute method, which allows them to be easily overridden e.g. in a role.
 
 * `node['mariadb']['server_root_password']` - Set the server's root password
 * `node['mariadb']['server_repl_password']` - Set the replication user 'repl' password
