@@ -5,21 +5,10 @@ when 'rhel'
   # Keep in this namespace for backwards compat
   default['mariadb']['data_dir'] = '/var/lib/mysql'
 
-  # switching logic to account for differences in platform native
-  # package versions
-  case node['platform_version'].to_i
-  when 5
-    default['mariadb']['server']['packages'] = ['MariaDB-server']
-    default['mariadb']['server']['log_slow_queries']     = '/var/log/mysql/slow.log'
-  when 6
-    default['mariadb']['server']['packages'] = ['MariaDB-server']
-    default['mariadb']['server']['slow_query_log']       = 1
-    default['mariadb']['server']['slow_query_log_file']  = '/var/log/mysql/slow.log'
-  when 2013 # amazon linux
-    default['mariadb']['server']['packages'] = ['MariaDB-server']
-    default['mariadb']['server']['slow_query_log']       = 1
-    default['mariadb']['server']['slow_query_log_file']  = '/var/log/mysql/slow.log'
-  end
+  # Setup the install package and the slow query logging
+  default['mariadb']['server']['packages'] = ['MariaDB-server']
+  default['mariadb']['server']['slow_query_log']       = 1
+  default['mariadb']['server']['slow_query_log_file']  = '/var/log/mysql/slow.log'
 
   # Platformisms.. filesystem locations and such.
   default['mariadb']['server']['basedir'] = '/usr'

@@ -31,19 +31,13 @@ template 'initial-my.cnf' do
   owner 'root'
   group 'root'
   mode '0644'
-  notifies :start, 'service[mysql-start]', :immediately
+  notifies :start, 'service[mysql]', :immediately
 end
 
 # hax
-service 'mysql-start' do
+service 'mysql' do
   service_name node['mariadb']['server']['service_name']
   action :nothing
-end
-
-execute '/usr/bin/mysql_install_db' do
-  action :run
-  creates '/var/lib/mysql/user.frm'
-  only_if { node['platform_version'].to_i < 6 }
 end
 
 cmd = assign_root_password_cmd
