@@ -6,8 +6,8 @@ driver_config:
 platforms:
 - name: centos-5.9
 - name: centos-6.5
+- name: ubuntu-10.04
 - name: ubuntu-12.04
-- name: debian-7.1.0
 
 suites:
 - name: clients
@@ -15,3 +15,12 @@ suites:
     - recipe[base-box-prep]
     - recipe[mariadb::client]
   attributes:
+- name: servers
+  run_list:
+    - recipe[base-box-prep]
+    - recipe[mariadb::server]
+  attributes:
+    mariadb:
+      server_debian_password: 'ilovestrongpasswords'
+      server_root_password:   'ilovestrongpasswords'
+      server_repl_password:   'ilovestrongpasswords'
