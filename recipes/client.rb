@@ -24,10 +24,9 @@
 include_recipe 'mariadb::mariadb_repo'
 
 # On RHEL platforms, yum isn't happy to have MariaDB and mysql-libs coexisting
-if node['platform_family'] == 'rhel'
-  package 'mysql-libs' do
-    action :remove
-  end
+package 'mysql-libs' do
+  action :remove
+  only_if { node['platform_family'] == 'rhel' }
 end
 
 case node['platform']
