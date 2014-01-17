@@ -23,6 +23,13 @@
 
 include_recipe 'mariadb::mariadb_repo'
 
+# On RHEL platforms, yum isn't happy to have MariaDB and mysql-libs coexisting
+if node['platform_family'] == 'rhel'
+  package 'mysql-libs' do
+    action :remove
+  end
+end
+
 case node['platform']
 when 'windows'
   package_file = node['mariadb']['client']['package_file']

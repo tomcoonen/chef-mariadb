@@ -12,12 +12,10 @@ platforms:
 suites:
 - name: clients
   run_list:
-    - recipe[base-box-prep]
     - recipe[mariadb::client]
   attributes:
 - name: servers
   run_list:
-    - recipe[base-box-prep]
     - recipe[mariadb::server]
   attributes:
     mariadb:
