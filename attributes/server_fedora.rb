@@ -6,7 +6,7 @@ when 'fedora'
   default['mariadb']['data_dir'] = '/var/lib/mysql'
 
   # Setup the install package and the slow query logging
-  default['mariadb']['server']['packages'] = ['MariaDB-server']
+  default['mariadb']['server']['packages'] = ['mariadb-server']
   default['mariadb']['server']['slow_query_log']       = 1
   default['mariadb']['server']['slow_query_log_file']  = '/var/log/mysql/slow.log'
 
@@ -26,7 +26,7 @@ when 'fedora'
   default['mariadb']['server']['socket']               = '/var/lib/mysql/mysql.sock'
   default['mariadb']['server']['grants_path']          = '/etc/mysql_grants.sql'
   default['mariadb']['server']['old_passwords']        = 1
-  default['mariadb']['server']['service_name']        = 'mysql'
+  default['mariadb']['server']['service_name']        = 'mariadb'
 
   # RHEL/CentOS mysql package does not support this option.
   default['mariadb']['tunable']['innodb_adaptive_flushing'] = false

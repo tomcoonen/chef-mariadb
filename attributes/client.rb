@@ -22,8 +22,10 @@
 ::Chef::Node.send(:include, Opscode::Mysql::Helpers)
 
 case node['platform_family']
-when 'rhel', 'fedora'
+when 'rhel'
   default['mariadb']['client']['packages'] = %w{MariaDB-client MariaDB-devel}
+when 'fedora'
+  default['mariadb']['client']['packages'] = %w{mariadb mariadb-devel}
 when 'suse'
   default['mariadb']['client']['packages'] = %w{mariadb-community-server-client libmariadbclient-devel}
 when 'debian'
