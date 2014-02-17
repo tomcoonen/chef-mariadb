@@ -41,6 +41,8 @@ when 'rhel', 'fedora'
   include_recipe 'yum'
 
   arch = node['kernel']['machine']
+  # Fedora reports the architecture as 'x86_64'
+  arch = 'amd64' if arch == 'x86_64'
   arch = 'x86' unless arch == 'amd64'
   pversion = node['platform_version'].split('.').first
 
