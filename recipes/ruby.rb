@@ -29,3 +29,6 @@ node['mariadb']['client']['packages'].each do |name|
 end
 
 chef_gem 'mysql2'
+
+# The database cookbook needs the mysql gem
+chef_gem 'mysql'
