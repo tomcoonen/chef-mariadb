@@ -76,7 +76,7 @@ template "#{node['mariadb']['data_dir']}/replication_slave_script" do
 end
 
 case node['platform_family']
-when 'rhel'
+when 'rhel', 'fedora'
   include_recipe 'mariadb::_server_rhel'
 when 'debian'
   include_recipe 'mariadb::_server_debian'

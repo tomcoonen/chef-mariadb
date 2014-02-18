@@ -37,10 +37,12 @@ when 'debian'
     action :add
   end
 
-when 'rhel', 'fedora'
+when 'rhel'
   include_recipe 'yum'
 
   arch = node['kernel']['machine']
+  # Fedora reports the architecture as 'x86_64'
+  arch = 'amd64' if arch == 'x86_64'
   arch = 'x86' unless arch == 'amd64'
   pversion = node['platform_version'].split('.').first
 
@@ -49,4 +51,9 @@ when 'rhel', 'fedora'
     baseurl     "http://yum.mariadb.org/#{node['mariadb']['version']}/#{node['platform']}#{pversion}-#{arch}"
     gpgkey      'https://yum.mariadb.org/RPM-GPG-KEY-MariaDB'
   end
+when 'fedora'
+  # Fedora provides MariaDB as part of the system's default repositories
+  # Additionally, MariaDB's amd64 repository has issues on Fedora x86_64
+  # https://mariadb.atlassian.net/browse/MDEV-5152
+  # So just use the system repositories
 end
