@@ -1,4 +1,20 @@
 #----
+# Set up repo for MariaDB 10.0
+#---
+
+package "software-properties-common" do
+  action :install
+end
+
+apt_repository 'mariadb-server' do
+  uri          'http://mirrors.supportex.net/mariadb/repo/10.0/ubuntu'
+  distribution 'trusty'
+  components   ['main']
+  keyserver    'keyserver.ubuntu.com'
+  key          '0xcbcb082a1bb943db'
+end
+
+#----
 # Set up preseeding data for debian packages
 #---
 directory '/var/cache/local/preseeding' do
